@@ -34,10 +34,15 @@ if (!secretKey) {
   process.exit(1);
 }
 
-const knownUrls = {
-  "https://buy.stripe.com/14AdRb9SS01z1jzaw2cAo00": "light",
-  "https://buy.stripe.com/6oU00laWWaGdaU97jQcAo01": "full",
-};
+// Read the current checkout URLs straight from the source of truth instead
+// of hardcoding them here, so this script can't silently go stale again.
+const checkoutTs = readFileSync(path.join(root, "src/lib/checkout.ts"), "utf8");
+const lightMatch = checkoutTs.match(/light:\s*"([^"]+)"/);
+const fullMatch = checkoutTs.match(/full:\s*"([^"]+)"/);
+
+const knownUrls = {};
+if (lightMatch) knownUrls[lightMatch[1]] = "light";
+if (fullMatch) knownUrls[fullMatch[1]] = "full";
 
 const res = await fetch("https://api.stripe.com/v1/payment_links?limit=100", {
   headers: { Authorization: `Bearer ${secretKey}` },

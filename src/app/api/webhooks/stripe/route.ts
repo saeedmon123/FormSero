@@ -1,14 +1,12 @@
 import "server-only";
 import { NextRequest, NextResponse } from "next/server";
-import { readFile } from "node:fs/promises";
-import path from "node:path";
+import { getStore } from "@netlify/blobs";
 import type Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
 import { getResend } from "@/lib/resend";
 import { buildPurchaseEmail } from "@/lib/email-templates";
 
-// Needs the Node runtime, not Edge: the Stripe SDK and PDF file reads both
-// require Node APIs.
+// Needs the Node runtime, not Edge: the Stripe SDK requires Node APIs.
 export const runtime = "nodejs";
 
 type EditionId = "light" | "full";
@@ -25,15 +23,17 @@ function resolveEdition(paymentLinkId: string | null): EditionId | null {
   return null;
 }
 
-// Two fully static readFile calls (rather than building the path from a
-// variable) so Next's build-time file tracer can see exactly which files
-// this route needs, instead of falling back to tracing — and bundling —
-// the entire project.
+// PDFs are stored in Netlify Blobs (uploaded once via scripts/upload-pdfs.mjs)
+// rather than bundled into the function — bundling non-code files into a
+// Next.js serverless function via file-tracing proved unreliable on
+// Netlify's Next Runtime (the deployed function couldn't find them on disk).
 async function readEditionPdf(edition: EditionId): Promise<Buffer> {
-  if (edition === "light") {
-    return readFile(path.join(process.cwd(), "private/pdfs/light.pdf"));
+  const store = getStore("pdfs");
+  const data = await store.get(edition, { type: "arrayBuffer" });
+  if (!data) {
+    throw new Error(`No blob found for key "${edition}" in the "pdfs" store`);
   }
-  return readFile(path.join(process.cwd(), "private/pdfs/full.pdf"));
+  return Buffer.from(data);
 }
 
 export async function POST(req: NextRequest) {
