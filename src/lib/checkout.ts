@@ -2,5 +2,5 @@
 // if either of these is ever cleared back to an empty string.
 export const checkoutLinks: { light: string; full: string } = {
   light: "https://buy.stripe.com/14AdRb9SS01z1jzaw2cAo00",
-  full: "https://buy.stripe.com/6oU00laWWaGdaU97jQcAo01",
+  full: "https://buy.stripe.com/6oU7sN4yy4hP2nDcEacAo02",
 };
