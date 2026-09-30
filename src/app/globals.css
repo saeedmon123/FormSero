@@ -1,26 +1,101 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-black: #0a0a09;
+  --color-charcoal: #171715;
+  --color-ivory: #f4f0e8;
+  --color-muted: #98948b;
+  --color-signal: #ff5a1f;
+
+  --font-display: var(--font-archivo);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html {
+  scroll-behavior: smooth;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-black);
+  color: var(--color-ivory);
+}
+
+::selection {
+  background: var(--color-signal);
+  color: var(--color-black);
+}
+
+/* Custom scrollbar (webkit) */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-black);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-charcoal);
+  border: 2px solid var(--color-black);
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
+}
+
+/* Focus visibility */
+:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 3px;
+}
+
+/* Hide native cursor for pointer-capable, non-reduced-motion desktop,
+   only once real pointer activity has been observed (see CustomCursor). */
+@media (hover: hover) and (pointer: fine) {
+  .cursor-ready {
+    cursor: none;
+  }
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+/* react-three-fiber's <canvas> is a replaced element: without an explicit
+   CSS size it falls back to its intrinsic 300x150 attribute size instead of
+   filling its sized parent. Force it to track the parent explicitly. This is
+   the only <canvas> on the page. */
+canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* Pure-CSS hero entrance: deliberately not JS/hydration-driven, so the
+   primary above-the-fold content can never get stuck invisible waiting on
+   a framework animation library to mount. */
+@keyframes hero-copy-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-copy-in {
+  animation: hero-copy-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-copy-in {
+    animation: none;
+  }
 }
