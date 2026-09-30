@@ -1,5 +1,12 @@
 [build]
   command = "npm run build"
 
+[build.environment]
+  # Next.js/Turbopack's persistent build cache can capture resolved env var
+  # strings while tracing server code. That cache is never served to
+  # visitors, so exclude it from Netlify's secrets scan rather than the
+  # actual build output — keeps the scan protecting everything else.
+  SECRETS_SCAN_OMIT_PATHS = ".netlify/.next/cache/**,.next/cache/**"
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
