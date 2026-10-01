@@ -100,8 +100,9 @@ export async function POST(req: NextRequest) {
 
   const { subject, html, text } = buildPurchaseEmail(edition);
 
+  let sendResult: Awaited<ReturnType<ReturnType<typeof getResend>["emails"]["send"]>>;
   try {
-    await getResend().emails.send({
+    sendResult = await getResend().emails.send({
       from: process.env.RESEND_FROM_EMAIL ?? "FORMSERO <onboarding@resend.dev>",
       to: email,
       subject,
@@ -110,9 +111,28 @@ export async function POST(req: NextRequest) {
       attachments: [{ filename, content: pdfBuffer }],
     });
   } catch (err) {
-    console.error("Stripe webhook: failed to send purchase email", err);
+    console.error("Stripe webhook: Resend request threw", err);
     return NextResponse.json({ error: "Email send failed" }, { status: 500 });
   }
+
+  // The Resend SDK does NOT throw on an API-level rejection (e.g. the
+  // sandbox sender restriction, an unverified domain, an invalid "from")
+  // — it resolves normally with an `error` field instead. Checking for
+  // that is the only way to actually know the send was rejected.
+  if (sendResult.error) {
+    console.error("Stripe webhook: Resend rejected the email", {
+      edition,
+      to: email,
+      error: sendResult.error,
+    });
+    return NextResponse.json({ error: "Email send rejected" }, { status: 500 });
+  }
+
+  console.log("Stripe webhook: purchase email sent", {
+    edition,
+    to: email,
+    resendId: sendResult.data?.id,
+  });
 
   return NextResponse.json({ received: true });
 }
