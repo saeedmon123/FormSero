@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { navLinks, primaryCtaHref } from "@/lib/nav";
@@ -30,13 +31,13 @@ export function Header() {
       }`}
     >
       <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-4 md:px-10">
-        <a
-          href="#top"
+        <Link
+          href="/#top"
           className="font-display text-lg font-black tracking-tight text-ivory"
           data-cursor="interactive"
         >
           FORM<span className="text-signal">SERO</span>
-        </a>
+        </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => (

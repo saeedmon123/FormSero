@@ -49,3 +49,6 @@ next-env.d.ts
 
 # scratch output from browser-automation tooling used during development
 /.playwright-mcp/
+
+# Local Netlify folder
+.netlify

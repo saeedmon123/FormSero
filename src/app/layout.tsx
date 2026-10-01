@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Archivo, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { CustomCursor } from "@/components/layout/CustomCursor";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 
 const archivo = Archivo({
   variable: "--font-archivo",
@@ -60,7 +62,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col bg-black text-ivory selection:bg-signal selection:text-black">
         <CustomCursor />
+        <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );

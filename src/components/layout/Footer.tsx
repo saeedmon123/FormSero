@@ -20,9 +20,6 @@ export function Footer() {
           <a href="/terms" className="transition-colors hover:text-ivory" data-cursor="interactive">
             Terms
           </a>
-          <a href="/refund" className="transition-colors hover:text-ivory" data-cursor="interactive">
-            Refund
-          </a>
         </div>
 
         <p className="font-mono text-xs uppercase tracking-[0.15em] text-muted">

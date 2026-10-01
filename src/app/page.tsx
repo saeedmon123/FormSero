@@ -1,5 +1,3 @@
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/sections/Hero";
 import { Problem } from "@/components/sections/Problem";
 import { ScrollStory } from "@/components/sections/ScrollStory";
@@ -15,23 +13,19 @@ import { FinalCTA } from "@/components/sections/FinalCTA";
 
 export default function Home() {
   return (
-    <>
-      <Header />
-      <main>
-        <Hero />
-        <Problem />
-        <ScrollStory />
-        <BookIntro />
-        <Editions />
-        <Comparison />
-        <Proof />
-        <InsideBook />
-        <WhoItsFor />
-        <ProofIsThePage />
-        <FAQSection />
-        <FinalCTA />
-      </main>
-      <Footer />
-    </>
+    <main>
+      <Hero />
+      <Problem />
+      <ScrollStory />
+      <BookIntro />
+      <Editions />
+      <Comparison />
+      <Proof />
+      <InsideBook />
+      <WhoItsFor />
+      <ProofIsThePage />
+      <FAQSection />
+      <FinalCTA />
+    </main>
   );
 }
