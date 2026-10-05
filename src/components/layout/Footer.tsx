@@ -13,12 +13,24 @@ export function Footer() {
           </p>
         </div>
 
-        <div className="flex gap-10 font-mono text-xs uppercase tracking-[0.15em] text-muted">
-          <a href="/privacy" className="transition-colors hover:text-ivory" data-cursor="interactive">
-            Privacy
-          </a>
-          <a href="/terms" className="transition-colors hover:text-ivory" data-cursor="interactive">
-            Terms
+        <div className="flex flex-col gap-6 font-mono text-xs uppercase tracking-[0.15em] text-muted">
+          <div className="flex gap-10">
+            <a href="/privacy" className="transition-colors hover:text-ivory" data-cursor="interactive">
+              Privacy
+            </a>
+            <a href="/terms" className="transition-colors hover:text-ivory" data-cursor="interactive">
+              Terms
+            </a>
+            <a href="/contact" className="transition-colors hover:text-ivory" data-cursor="interactive">
+              Contact
+            </a>
+          </div>
+          <a
+            href="mailto:hello@formsero.com"
+            className="normal-case tracking-normal transition-colors hover:text-signal"
+            data-cursor="interactive"
+          >
+            hello@formsero.com
           </a>
         </div>
 

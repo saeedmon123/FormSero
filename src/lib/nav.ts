@@ -12,6 +12,7 @@ export const navLinks: NavLink[] = [
   { label: "Editions", href: "/#editions" },
   { label: "Proof", href: "/#proof" },
   { label: "FAQ", href: "/#faq" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export const primaryCtaHref = "/#editions";
